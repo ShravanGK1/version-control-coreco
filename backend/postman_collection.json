@@ -1,0 +1,341 @@
+{
+	"info": {
+		"_postman_id": "a7b3c2d1-e8f9-4a0b-9c8d-7e6f5a4b3c2d",
+		"name": "Version Control Management System API",
+		"description": "Postman Collection for testing all REST API endpoints of the Version Control Management System backend.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000/api",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refreshToken",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "POST Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data) {",
+									"    pm.collectionVariables.set('accessToken', jsonData.data.accessToken);",
+									"    pm.collectionVariables.set('refreshToken', jsonData.data.refreshToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"Password123!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/refresh-token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/auth/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Projects",
+			"item": [
+				{
+					"name": "GET Active Projects",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/projects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"projects"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Version Control",
+			"item": [
+				{
+					"name": "GET Next Version Number",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/versions/next-number?projectId=1&versionType=major",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"versions",
+								"next-number"
+							],
+							"query": [
+								{
+									"key": "projectId",
+									"value": "1"
+								},
+								{
+									"key": "versionType",
+									"value": "major"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Versions (Paginated & Filtered)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/versions?page=1&limit=10&projectId=1&showDeleted=false",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"versions"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "projectId",
+									"value": "1"
+								},
+								{
+									"key": "showDeleted",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Version By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/versions/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"versions",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Create Version",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"projectId\": 1,\n  \"version\": \"minor\",\n  \"versionTitle\": \"New Dashboard Component\",\n  \"versionInfo\": {\n    \"description\": \"Added interactive chart widget\",\n    \"tags\": [\"ui\", \"charts\"]\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/versions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"versions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Update Version",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"projectId\": 1,\n  \"version\": \"minor\",\n  \"versionTitle\": \"Updated Dashboard Component Title\",\n  \"versionInfo\": {\n    \"description\": \"Updated description for interactive chart widget\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/versions/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"versions",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH Toggle Version Status (Soft Delete)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/versions/1/toggle-status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"versions",
+								"1",
+								"toggle-status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
