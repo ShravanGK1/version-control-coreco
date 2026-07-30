@@ -9,6 +9,7 @@ import { VersionFiltersBar } from '../components/versions/VersionFilters';
 import { VersionTable } from '../components/versions/VersionTable';
 import { PaginationControls } from '../components/versions/Pagination';
 import { ModalMode, VersionModal } from '../components/versions/VersionModal';
+import { VersionCharts } from '../components/versions/VersionCharts';
 import { AlertTriangle, CheckCircle2, GitBranch, Layers, Plus, RefreshCw, Trash2 } from 'lucide-react';
 
 export const VersionListingPage: React.FC = () => {
@@ -229,6 +230,9 @@ export const VersionListingPage: React.FC = () => {
         onChange={handleFilterChange}
         onReset={handleResetFilters}
       />
+
+      {/* Analytics & Data Visualization Charts Section */}
+      <VersionCharts versions={versions} />
 
       {/* API Error Message Banner */}
       {errorMessage && (
