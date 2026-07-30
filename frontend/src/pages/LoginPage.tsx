@@ -41,7 +41,6 @@ export const LoginPage: React.FC = () => {
             <GitBranch size={32} />
           </div>
           <h1>Version Control System</h1>
-          <p>University Software Engineering & API Management Console</p>
         </div>
 
         <form className="login-form" onSubmit={handleSubmit}>
